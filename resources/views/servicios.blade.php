@@ -4,13 +4,20 @@
 
 @section('content')
     <h2>SERVICIOS</h2>
-    <ul>
-        @if($servicios)
+    <tr>
+        @if(!$servicios->isEmpty())
             @foreach($servicios as $servicio)
-                <li>{{$servicio['titulo']}}</li>
+                <td class="servicios" colspan="3">
+                    <a href="{{route('servicios.show',$servicio)}}">
+                        {{$servicio->titulo}}
+                    </a>
+                </td>
             @endforeach
         @else
-            <li>No existe ningun servicio que mostrar.</li>
+            <td colspan="6">No existe ningun servicio que mostrar.</td>
         @endif
-    </ul>
+    </tr>
+    <tr>
+        <td colspan="6">{{$servicios->links('pagination::bootstrap-4')}}</td>
+    </tr>
 @endsection

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Proyecto;
 
 class ProyectosController extends Controller
 {
@@ -11,11 +13,18 @@ class ProyectosController extends Controller
      */
     public function index()
     {
-        //
-        $proyectos=[
-            ['titulo'=>'Proyecto 01'],
-            ['titulo'=>'Proyecto 02']
-        ];
+        //$proyectos=DB::table('proyectos')->get();//Cuando aun no se crea el modelo
+        //$proyectos=Proyecto::get();//Cuando ya se crea el modelo
+
+        //Metodo latest ordena la tabla en forma descendente por un determinado campo.
+        //$proyectos=Proyecto::latest('titulo')->get();
+
+        //Metodo orderBy ordena la tabla en una determinada forma por un determinado campo.
+        //$proyectos=Proyecto::orderBy('titulo','asc')->get();
+        
+        //Metodo paginate divide en paginas una determinada cantidad de elementos que se deben mostrar.
+        $proyectos=Proyecto::latest('titulo')->paginate(2);
+
         return view('proyectos',compact('proyectos'));
     }
 
@@ -40,7 +49,12 @@ class ProyectosController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //Busca en la tabla y retorna la informacion requerida
+        //return Proyecto::find($id);
+        return view('show',[
+            'type'=>'proyecto',
+            'resource'=>Proyecto::find($id)
+        ]);
     }
 
     /**

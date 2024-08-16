@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Cliente;
 
 class ClientesController extends Controller
 {
@@ -11,11 +13,18 @@ class ClientesController extends Controller
      */
     public function index()
     {
-        //
-        $clientes=[
-            ['titulo'=>'Cliente 01'],
-            ['titulo'=>'Cliente 02']
-        ];
+        //$clientes=DB::table('clientes')->get();//Cuando aun no se crea el modelo
+        //$clientes=Cliente::get();//Cuando ya se crea el modelo
+
+        //Metodo latest ordena la tabla en forma descendente por un determinado campo.
+        //$clientes=Cliente::latest('titulo')->get();
+
+        //Metodo orderBy ordena la tabla en una determinada forma por un determinado campo.
+        //$clientes=Cliente::orderBy('titulo','asc')->get();
+        
+        //Metodo paginate divide en paginas una determinada cantidad de elementos que se deben mostrar.
+        $clientes=Cliente::latest('nombres')->paginate(2);
+
         return view('clientes',compact('clientes'));
     }
 
@@ -40,7 +49,12 @@ class ClientesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //Busca en la tabla y retorna la informacion requerida
+        //return Cliente::find($id);
+        return view('show',[
+            'type'=>'cliente',
+            'resource'=>Cliente::find($id)
+        ]);
     }
 
     /**
