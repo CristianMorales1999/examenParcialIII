@@ -33,7 +33,8 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        //
+        $tipo = 'cliente';
+        return view('create', compact('tipo'));
     }
 
     /**
@@ -41,7 +42,35 @@ class ClientesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /*//Opcion 01 de Insercion
+        
+        //Recogemos las variables
+        $nombres=request('nombres');
+        $apellidos=request('apellidos');
+        $email=request('email');
+        $direccion=request('direccion');
+        $telefono=request('telefono');
+
+        //Almacenamos en la BD usando el modelo Cliente
+        Cliente::create(['nombres'=>$nombres,'apellidos'=>$apellidos,'email'=>$email,'direccion'=>$direccion,'telefono'=>$telefono]);*/
+
+        /*//Opcion 2 de Insercion (En el caso de tener los mismo nombres de campo que tenemos en el formulario)
+        Cliente::create(request()->all());*/
+
+        //Opcion 03: Validando campos
+        $camposv=request()->validate(
+            [
+                'nombres'=>'required',
+                'apellidos'=>'required',
+                'email'=>'required',
+                'direccion'=>'required',
+                'telefono'=>'required',
+            ]
+        );
+        //Almacenamos en la BD usando el modelo Servicio
+        Cliente::create($camposv);
+
+        return redirect()->route('clientes.index');
     }
 
     /**

@@ -33,7 +33,8 @@ class ProyectosController extends Controller
      */
     public function create()
     {
-        //
+        $tipo = 'proyecto';
+        return view('create', compact('tipo'));
     }
 
     /**
@@ -41,7 +42,29 @@ class ProyectosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /*//Opcion 01 de Insercion
+        
+        //Recogemos las variables
+        $titulo=request('titulo');
+        $descripcion=request('descripcion');
+
+        //Almacenamos en la BD usando el modelo Proyecto
+        Proyecto::create(['titulo'=>$titulo,'descripcion'=>$descripcion]);*/
+
+        /*//Opcion 2 de Insercion (En el caso de tener los mismo nombres de campo que tenemos en el formulario)
+        Proyecto::create(request()->all());*/
+
+        //Opcion 03: Validando campos
+        $camposv=request()->validate(
+            [
+                'titulo'=>'required',
+                'descripcion'=>'required'
+            ]
+        );
+        //Almacenamos en la BD usando el modelo Servicio
+        Proyecto::create($camposv);
+
+        return redirect()->route('proyectos.index');
     }
 
     /**

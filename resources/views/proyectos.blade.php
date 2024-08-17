@@ -3,7 +3,13 @@
 @section('title','Proyectos')
 
 @section('content')
-    <h2>PROYECTOS</h2>
+    <h2>Proyectos</h2>
+    <tr>
+        <td colspan="6" class="servicios">
+            <a href="{{route('proyectos.create')}}">Nuevo Proyecto</a>
+        </td>
+    </tr>
+    
     <tr>
         @if(!$proyectos->isEmpty())
             @foreach($proyectos as $proyecto)
