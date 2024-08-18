@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Servicio;
+use App\Http\Requests\CreateServicioRequest;
 
 class ServiciosController extends Controller
 {
@@ -40,29 +41,10 @@ class ServiciosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateServicioRequest $request)
     {
-        /*//Opcion 01 de Insercion
-        
-        //Recogemos las variables
-        $titulo=request('titulo');
-        $descripcion=request('descripcion');
-
-        //Almacenamos en la BD usando el modelo Servicio
-        Servicio::create(['titulo'=>$titulo,'descripcion'=>$descripcion]);*/
-
-        /*//Opcion 2 de Insercion (En el caso de tener los mismo nombres de campo que tenemos en el formulario)
-        Servicio::create(request()->all());*/
-
-        //Opcion 03: Validando campos
-        $camposv=request()->validate(
-            [
-                'titulo'=>'required',
-                'descripcion'=>'required'
-            ]
-        );
-        //Almacenamos en la BD usando el modelo Servicio
-        Servicio::create($camposv);
+        //Eliminamos las reglas de validacion que estaban anteriormente ya que la validación ahora ocurrirá automaticamente
+        Servicio::create($request->validated());
 
         return redirect()->route('servicios.index');
     }

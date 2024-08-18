@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
+use App\Http\Requests\CreateProyectoRequest;
 
 class ProyectosController extends Controller
 {
@@ -40,29 +41,10 @@ class ProyectosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateProyectoRequest $request)
     {
-        /*//Opcion 01 de Insercion
-        
-        //Recogemos las variables
-        $titulo=request('titulo');
-        $descripcion=request('descripcion');
-
-        //Almacenamos en la BD usando el modelo Proyecto
-        Proyecto::create(['titulo'=>$titulo,'descripcion'=>$descripcion]);*/
-
-        /*//Opcion 2 de Insercion (En el caso de tener los mismo nombres de campo que tenemos en el formulario)
-        Proyecto::create(request()->all());*/
-
-        //Opcion 03: Validando campos
-        $camposv=request()->validate(
-            [
-                'titulo'=>'required',
-                'descripcion'=>'required'
-            ]
-        );
-        //Almacenamos en la BD usando el modelo Servicio
-        Proyecto::create($camposv);
+        //Eliminamos las reglas de validacion que estaban anteriormente ya que la validación ahora ocurrirá automaticamente
+        Proyecto::create($request->validated());
 
         return redirect()->route('proyectos.index');
     }
