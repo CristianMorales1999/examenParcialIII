@@ -34,8 +34,12 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        $tipo = 'cliente';
-        return view('create', compact('tipo'));
+        //$tipo = 'cliente';
+        //return view('create', compact('tipo'));
+        return view('create',[
+            'tipo'=>'cliente',
+            'resource'=> new Cliente
+        ]);
     }
 
     /**

@@ -34,8 +34,12 @@ class ProyectosController extends Controller
      */
     public function create()
     {
-        $tipo = 'proyecto';
-        return view('create', compact('tipo'));
+        //$tipo = 'proyecto';
+        //return view('create', compact('tipo'));
+        return view('create',[
+            'tipo'=>'proyecto',
+            'resource'=> new Proyecto
+        ]);
     }
 
     /**

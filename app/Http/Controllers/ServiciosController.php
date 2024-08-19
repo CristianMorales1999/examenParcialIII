@@ -34,8 +34,12 @@ class ServiciosController extends Controller
      */
     public function create()
     {
-        $tipo = 'servicio';
-        return view('create', compact('tipo'));
+        //$tipo = 'servicio';
+        //return view('create', compact('tipo'));
+        return view('create',[
+            'tipo'=>'servicio',
+            'resource'=> new Servicio
+        ]);
     }
 
     /**
