@@ -4,7 +4,8 @@
 
 @section('content')
     <tr>
-        <td colspan="6" class="servicios"><b>{{ strtoupper($type) }} {{ $resource->id }}</b></td>
+        <td colspan="5" class="servicios"><b>{{ strtoupper($type) }} {{ $resource->id }}</b></td>
+        <td colspan="1" class="servicios"><b><a href="{{route($type.'s.edit',$resource)}}">Editar</a></b></td>
     </tr>
     <tr>
         <td colspan="6"><b>Nombre:</b> {{ $resource->titulo ?? $resource->nombres }}</td>

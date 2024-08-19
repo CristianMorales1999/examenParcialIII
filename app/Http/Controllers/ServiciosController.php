@@ -67,15 +67,20 @@ class ServiciosController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('edit',[
+            'tipo'=>'servicio',
+            'resource'=>Servicio::find($id)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreateServicioRequest $request, Servicio $servicio)
     {
-        //
+        $servicio->update($request->validated());
+
+        return redirect()->route('servicios.show',$servicio);
     }
 
     /**

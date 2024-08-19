@@ -67,15 +67,20 @@ class ClientesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('edit',[
+            'tipo'=>'cliente',
+            'resource'=>Cliente::find($id)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreateClienteRequest $request, Cliente $cliente)
     {
-        //
+        $cliente->update($request->validated());
+
+        return redirect()->route('clientes.show',$cliente);
     }
 
     /**

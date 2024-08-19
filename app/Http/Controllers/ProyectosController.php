@@ -67,15 +67,20 @@ class ProyectosController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('edit',[
+            'tipo'=>'proyecto',
+            'resource'=>Proyecto::find($id)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreateProyectoRequest $request, Proyecto $proyecto)
     {
-        //
+        $proyecto->update($request->validated());
+
+        return redirect()->route('proyectos.show',$proyecto);
     }
 
     /**
