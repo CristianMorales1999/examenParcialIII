@@ -90,8 +90,9 @@ class ProyectosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Proyecto $proyecto)
     {
-        //
+        $proyecto->delete();
+        return redirect()->route('proyectos.index');
     }
 }
