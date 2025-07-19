@@ -23,8 +23,7 @@ class ProyectosController extends Controller
         //Metodo orderBy ordena la tabla en una determinada forma por un determinado campo.
         //$proyectos=Proyecto::orderBy('titulo','asc')->get();
         
-        //Metodo paginate divide en paginas una determinada cantidad de elementos que se deben mostrar.
-        $proyectos=Proyecto::latest('titulo')->paginate(9);
+        $proyectos = Proyecto::latest()->paginate(9);
 
         return view('proyectos',compact('proyectos'));
     }
