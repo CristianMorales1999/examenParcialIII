@@ -1,7 +1,7 @@
 @csrf
 
 <div class="space-y-6">
-    @if($tipo === 'servicio' || $tipo === 'proyecto')
+@if($tipo === 'servicio' || $tipo === 'proyecto')
         <!-- Título -->
         <div>
             <label for="titulo" class="block text-sm font-medium text-gray-700 mb-2">
@@ -35,7 +35,7 @@
             @enderror
         </div>
 
-    @elseif($tipo === 'cliente')
+@elseif($tipo === 'cliente')
         <!-- Foto -->
         <div>
             <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">
@@ -54,8 +54,8 @@
                         </div>
                     </div>
                 </div>
-            @endif
-            
+@endif
+
             <div class="flex items-center justify-center w-full">
                 <label for="foto" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 @error('foto') border-red-300 @enderror">
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">

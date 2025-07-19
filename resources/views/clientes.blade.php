@@ -104,54 +104,7 @@
         </div>
         
         <!-- Pagination -->
-        @if($clientes->hasPages())
-            <div class="mt-8">
-                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-lg shadow-sm">
-                    <div class="flex-1 flex justify-between sm:hidden">
-                        @if($clientes->onFirstPage())
-                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
-                                Anterior
-                            </span>
-                        @else
-                            <a href="{{ $clientes->previousPageUrl() }}" 
-                               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                Anterior
-                            </a>
-                        @endif
-                        
-                        @if($clientes->hasMorePages())
-                            <a href="{{ $clientes->nextPageUrl() }}" 
-                               class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                Siguiente
-                            </a>
-                        @else
-                            <span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
-                                Siguiente
-                            </span>
-                        @endif
-                    </div>
-                    
-                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                            <p class="text-sm text-gray-700">
-                                Mostrando 
-                                <span class="font-medium">{{ $clientes->firstItem() }}</span>
-                                a 
-                                <span class="font-medium">{{ $clientes->lastItem() }}</span>
-                                de 
-                                <span class="font-medium">{{ $clientes->total() }}</span>
-                                resultados
-                            </p>
-                        </div>
-                        <div>
-                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                {{ $clientes->links() }}
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
+        @include('partials.pagination', ['paginator' => $clientes])
     @else
         <!-- Empty State -->
         <div class="text-center py-12">

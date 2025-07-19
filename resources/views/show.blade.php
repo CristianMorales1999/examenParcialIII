@@ -151,7 +151,7 @@
 
                 <!-- Additional Information -->
                 <div class="space-y-6">
-                    @if($type === 'cliente')
+    @if($type === 'cliente')
                         <!-- Photo Section -->
                         <div>
                             <h2 class="text-xl font-semibold text-gray-900 mb-4">Foto del Cliente</h2>
@@ -164,7 +164,7 @@
                                         <i class="fas fa-check-circle mr-1"></i>
                                         Foto personalizada
                                     </p>
-                                @else
+    @else
                                     <p class="text-sm text-gray-500">
                                         <i class="fas fa-user-circle mr-1"></i>
                                         Avatar generado automáticamente
@@ -214,7 +214,7 @@
                                         </p>
                                     </div>
                                 </div>
-                            @endif
+    @endif
                         </div>
                     </div>
                 </div>
@@ -245,7 +245,7 @@
                             <i class="fas fa-trash mr-2"></i>
                             Eliminar
                         </button>
-                    </form>
+            </form>
                 </div>
             </div>
         </div>

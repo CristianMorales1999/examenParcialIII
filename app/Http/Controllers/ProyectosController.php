@@ -24,7 +24,7 @@ class ProyectosController extends Controller
         //$proyectos=Proyecto::orderBy('titulo','asc')->get();
         
         //Metodo paginate divide en paginas una determinada cantidad de elementos que se deben mostrar.
-        $proyectos=Proyecto::latest('titulo')->paginate(2);
+        $proyectos=Proyecto::latest('titulo')->paginate(9);
 
         return view('proyectos',compact('proyectos'));
     }

@@ -24,7 +24,7 @@ class ServiciosController extends Controller
         //$servicios=Servicio::orderBy('titulo','asc')->get();
         
         //Metodo paginate divide en paginas una determinada cantidad de elementos que se deben mostrar.
-        $servicios=Servicio::latest('titulo')->paginate(2);
+        $servicios=Servicio::latest('titulo')->paginate(9);
 
         return view('servicios',compact('servicios'));
     }

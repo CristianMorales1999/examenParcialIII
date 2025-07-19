@@ -84,66 +84,19 @@
         </div>
         
         <!-- Pagination -->
-        @if($servicios->hasPages())
-            <div class="mt-8">
-                <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-lg shadow-sm">
-                    <div class="flex-1 flex justify-between sm:hidden">
-                        @if($servicios->onFirstPage())
-                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
-                                Anterior
-                            </span>
-                        @else
-                            <a href="{{ $servicios->previousPageUrl() }}" 
-                               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                Anterior
-                            </a>
-                        @endif
-                        
-                        @if($servicios->hasMorePages())
-                            <a href="{{ $servicios->nextPageUrl() }}" 
-                               class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                                Siguiente
-                            </a>
-                        @else
-                            <span class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
-                                Siguiente
-                            </span>
-                        @endif
-                    </div>
-                    
-                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                        <div>
-                            <p class="text-sm text-gray-700">
-                                Mostrando 
-                                <span class="font-medium">{{ $servicios->firstItem() }}</span>
-                                a 
-                                <span class="font-medium">{{ $servicios->lastItem() }}</span>
-                                de 
-                                <span class="font-medium">{{ $servicios->total() }}</span>
-                                resultados
-                            </p>
-                        </div>
-                        <div>
-                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                {{ $servicios->links() }}
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
+        @include('partials.pagination', ['paginator' => $servicios])
     @else
         <!-- Empty State -->
         <div class="text-center py-12">
             <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 mb-4">
                 <i class="fas fa-tools text-gray-400 text-xl"></i>
             </div>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No hay servicios disponibles</h3>
-            <p class="text-gray-500 mb-6">Comienza creando tu primer servicio para gestionar tu negocio.</p>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No hay servicios registrados</h3>
+            <p class="text-gray-500 mb-6">Comienza registrando tu primer servicio para ofrecer tus soluciones.</p>
             <a href="{{ route('servicios.create') }}" 
                class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
                 <i class="fas fa-plus mr-2"></i>
-                Crear Primer Servicio
+                Registrar Primer Servicio
             </a>
         </div>
     @endif

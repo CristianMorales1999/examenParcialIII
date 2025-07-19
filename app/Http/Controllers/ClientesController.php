@@ -26,7 +26,7 @@ class ClientesController extends Controller
         //$clientes=Cliente::orderBy('titulo','asc')->get();
         
         //Metodo paginate divide en paginas una determinada cantidad de elementos que se deben mostrar.
-        $clientes=Cliente::latest('nombres')->paginate(2);
+        $clientes=Cliente::latest('nombres')->paginate(9);
 
         return view('clientes',compact('clientes'));
     }
