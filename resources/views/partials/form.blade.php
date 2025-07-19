@@ -36,6 +36,63 @@
         </div>
 
     @elseif($tipo === 'cliente')
+        <!-- Foto -->
+        <div>
+            <label for="foto" class="block text-sm font-medium text-gray-700 mb-2">
+                Foto del Cliente
+            </label>
+            
+            @if(isset($resource) && $resource->foto)
+                <div class="mb-4">
+                    <div class="flex items-center space-x-4">
+                        <img src="{{ $resource->foto_url }}" 
+                             alt="Foto de {{ $resource->nombre_completo }}" 
+                             class="w-20 h-20 rounded-full object-cover border-2 border-gray-200">
+                        <div>
+                            <p class="text-sm text-gray-600">Foto actual</p>
+                            <p class="text-xs text-gray-500">Sube una nueva imagen para reemplazarla</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            
+            <div class="flex items-center justify-center w-full">
+                <label for="foto" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 @error('foto') border-red-300 @enderror">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <i class="fas fa-cloud-upload-alt text-gray-400 text-3xl mb-2"></i>
+                        <p class="mb-2 text-sm text-gray-500">
+                            <span class="font-semibold">Haz clic para subir</span> o arrastra y suelta
+                        </p>
+                        <p class="text-xs text-gray-500">PNG, JPG, GIF, WEBP hasta 2MB</p>
+                    </div>
+                    <input id="foto" 
+                           name="foto" 
+                           type="file" 
+                           class="hidden" 
+                           accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                           onchange="previewImage(this)">
+                </label>
+            </div>
+            
+            @error('foto')
+                <div class="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-triangle text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700">{{ $message }}</p>
+                        </div>
+                    </div>
+                </div>
+            @enderror
+            
+            <!-- Image Preview -->
+            <div id="imagePreview" class="mt-4 hidden">
+                <img id="preview" src="" alt="Vista previa" class="w-32 h-32 rounded-lg object-cover border border-gray-200">
+            </div>
+        </div>
+
         <!-- Nombres -->
         <div>
             <label for="nombres" class="block text-sm font-medium text-gray-700 mb-2">
@@ -136,3 +193,42 @@
         </button>
     </div>
 </div>
+
+<script>
+function previewImage(input) {
+    const preview = document.getElementById('preview');
+    const previewContainer = document.getElementById('imagePreview');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        
+        // Validate file type
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+            alert('Por favor selecciona una imagen válida (JPEG, PNG, JPG, GIF, WEBP)');
+            input.value = '';
+            previewContainer.classList.add('hidden');
+            return;
+        }
+        
+        // Validate file size (2MB = 2 * 1024 * 1024 bytes)
+        if (file.size > 2 * 1024 * 1024) {
+            alert('La imagen no puede ser mayor a 2MB');
+            input.value = '';
+            previewContainer.classList.add('hidden');
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+        }
+        
+        reader.readAsDataURL(file);
+    } else {
+        previewContainer.classList.add('hidden');
+    }
+}
+</script>

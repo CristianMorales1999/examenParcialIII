@@ -24,7 +24,7 @@
 
         <!-- Form -->
         <div class="p-6">
-            <form action="{{ route($tipo . 's.store') }}" method="post">
+            <form action="{{ route($tipo . 's.store') }}" method="post" enctype="multipart/form-data">
                 @include('partials.form', ['btnText' => 'Crear ' . ucfirst($tipo)])
             </form>
         </div>

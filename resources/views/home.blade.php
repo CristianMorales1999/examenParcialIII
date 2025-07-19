@@ -138,7 +138,8 @@
                         'date' => $servicio->created_at,
                         'route' => route('servicios.show', $servicio),
                         'icon' => 'fas fa-tools',
-                        'color' => 'blue'
+                        'color' => 'blue',
+                        'photo' => null
                     ]);
                 }
                 
@@ -151,7 +152,8 @@
                         'date' => $proyecto->created_at,
                         'route' => route('proyectos.show', $proyecto),
                         'icon' => 'fas fa-project-diagram',
-                        'color' => 'green'
+                        'color' => 'green',
+                        'photo' => null
                     ]);
                 }
                 
@@ -160,11 +162,12 @@
                 foreach($recentClientes as $cliente) {
                     $recentItems->push([
                         'type' => 'cliente',
-                        'title' => $cliente->nombres . ' ' . $cliente->apellidos,
+                        'title' => $cliente->nombre_completo,
                         'date' => $cliente->created_at,
                         'route' => route('clientes.show', $cliente),
                         'icon' => 'fas fa-user',
-                        'color' => 'purple'
+                        'color' => 'purple',
+                        'photo' => $cliente->foto_url
                     ]);
                 }
                 
@@ -175,9 +178,15 @@
                 @foreach($recentItems as $item)
                     <div class="flex items-center p-4 bg-gray-50 rounded-lg">
                         <div class="flex-shrink-0">
-                            <div class="w-10 h-10 bg-{{ $item['color'] }}-100 rounded-lg flex items-center justify-center">
-                                <i class="{{ $item['icon'] }} text-{{ $item['color'] }}-600"></i>
-                            </div>
+                            @if($item['photo'] && $item['type'] === 'cliente')
+                                <img src="{{ $item['photo'] }}" 
+                                     alt="Foto de {{ $item['title'] }}" 
+                                     class="w-10 h-10 rounded-full object-cover border-2 border-gray-200">
+                            @else
+                                <div class="w-10 h-10 bg-{{ $item['color'] }}-100 rounded-lg flex items-center justify-center">
+                                    <i class="{{ $item['icon'] }} text-{{ $item['color'] }}-600"></i>
+                                </div>
+                            @endif
                         </div>
                         <div class="ml-4 flex-1">
                             <h4 class="text-sm font-medium text-gray-900">

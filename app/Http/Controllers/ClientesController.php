@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use App\Models\Cliente;
 use App\Http\Requests\CreateClienteRequest;
 
@@ -47,10 +49,38 @@ class ClientesController extends Controller
      */
     public function store(CreateClienteRequest $request)
     {
-        //Eliminamos las reglas de validacion que estaban anteriormente ya que la validación ahora ocurrirá automaticamente
-        Cliente::create($request->validated());
+        try {
+            $data = $request->validated();
+            
+            // Handle photo upload
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                $foto = $request->file('foto');
+                
+                // Log file information for debugging
+                Log::info('Uploading photo', [
+                    'original_name' => $foto->getClientOriginalName(),
+                    'mime_type' => $foto->getMimeType(),
+                    'size' => $foto->getSize(),
+                    'extension' => $foto->getClientOriginalExtension()
+                ]);
+                
+                $fotoPath = $foto->store('clientes', 'public');
+                $data['foto'] = $fotoPath;
+                
+                Log::info('Photo stored successfully', ['path' => $fotoPath]);
+            }
 
-        return redirect()->route('clientes.index');
+            Cliente::create($data);
+
+            return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error creating client', [
+                'error' => $e->getMessage(),
+                'data' => $request->except(['foto'])
+            ]);
+            
+            return back()->withErrors(['error' => 'Error al crear el cliente: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -82,9 +112,45 @@ class ClientesController extends Controller
      */
     public function update(CreateClienteRequest $request, Cliente $cliente)
     {
-        $cliente->update($request->validated());
+        try {
+            $data = $request->validated();
+            
+            // Handle photo upload
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                $foto = $request->file('foto');
+                
+                // Log file information for debugging
+                Log::info('Updating photo', [
+                    'original_name' => $foto->getClientOriginalName(),
+                    'mime_type' => $foto->getMimeType(),
+                    'size' => $foto->getSize(),
+                    'extension' => $foto->getClientOriginalExtension()
+                ]);
+                
+                // Delete old photo if exists
+                if ($cliente->foto) {
+                    Storage::disk('public')->delete($cliente->foto);
+                    Log::info('Old photo deleted', ['path' => $cliente->foto]);
+                }
+                
+                $fotoPath = $foto->store('clientes', 'public');
+                $data['foto'] = $fotoPath;
+                
+                Log::info('New photo stored successfully', ['path' => $fotoPath]);
+            }
 
-        return redirect()->route('clientes.show',$cliente);
+            $cliente->update($data);
+
+            return redirect()->route('clientes.show',$cliente)->with('success', 'Cliente actualizado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error updating client', [
+                'error' => $e->getMessage(),
+                'client_id' => $cliente->id,
+                'data' => $request->except(['foto'])
+            ]);
+            
+            return back()->withErrors(['error' => 'Error al actualizar el cliente: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -92,7 +158,22 @@ class ClientesController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
-        $cliente->delete();
-        return redirect()->route('clientes.index');
+        try {
+            // Delete photo if exists
+            if ($cliente->foto) {
+                Storage::disk('public')->delete($cliente->foto);
+                Log::info('Client photo deleted', ['path' => $cliente->foto]);
+            }
+            
+            $cliente->delete();
+            return redirect()->route('clientes.index')->with('success', 'Cliente eliminado exitosamente');
+        } catch (\Exception $e) {
+            Log::error('Error deleting client', [
+                'error' => $e->getMessage(),
+                'client_id' => $cliente->id
+            ]);
+            
+            return back()->withErrors(['error' => 'Error al eliminar el cliente: ' . $e->getMessage()]);
+        }
     }
 }

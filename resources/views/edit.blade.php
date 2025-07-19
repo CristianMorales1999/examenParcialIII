@@ -24,7 +24,7 @@
 
         <!-- Form -->
         <div class="p-6">
-            <form action="{{ route($tipo . 's.update', $resource) }}" method="post">
+            <form action="{{ route($tipo . 's.update', $resource) }}" method="post" enctype="multipart/form-data">
                 @method('PATCH')
                 @include('partials.form', ['btnText' => 'Actualizar ' . ucfirst($tipo)])
             </form>

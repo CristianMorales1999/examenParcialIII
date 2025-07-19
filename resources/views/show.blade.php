@@ -9,20 +9,50 @@
         <div class="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-lg flex items-center justify-center mr-4
-                        @if($type === 'servicio') bg-blue-100 @elseif($type === 'proyecto') bg-green-100 @else bg-purple-100 @endif">
-                        <i class="fas 
-                            @if($type === 'servicio') fa-tools text-blue-600 @elseif($type === 'proyecto') fa-project-diagram text-green-600 @else fa-user text-purple-600 @endif
-                            text-xl"></i>
-                    </div>
+                    @if($type === 'cliente')
+                        <div class="relative mr-4">
+                            <img src="{{ $resource->foto_url }}" 
+                                 alt="Foto de {{ $resource->nombre_completo }}" 
+                                 class="w-20 h-20 rounded-full object-cover border-4 border-white shadow-lg">
+                            @if($resource->hasCustomPhoto())
+                                <div class="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <i class="fas fa-check text-white text-xs"></i>
+                                </div>
+                            @endif
+                        </div>
+                    @else
+                        <div class="w-12 h-12 rounded-lg flex items-center justify-center mr-4
+                            @if($type === 'servicio') bg-blue-100 @elseif($type === 'proyecto') bg-green-100 @else bg-purple-100 @endif">
+                            <i class="fas 
+                                @if($type === 'servicio') fa-tools text-blue-600 @elseif($type === 'proyecto') fa-project-diagram text-green-600 @else fa-user text-purple-600 @endif
+                                text-xl"></i>
+                        </div>
+                    @endif
                     <div>
                         <h1 class="text-3xl font-bold text-gray-900">
                             {{ ucfirst($type) }} #{{ $resource->id }}
                         </h1>
                         <p class="text-lg text-gray-600">
-                            {{ $resource->titulo ?? ($resource->nombres . ' ' . $resource->apellidos) }}
+                            {{ $resource->titulo ?? $resource->nombre_completo }}
                         </p>
                     </div>
+                </div>
+                <div class="flex space-x-2">
+                    <a href="{{ route($type.'s.edit', $resource) }}" 
+                       class="inline-flex items-center px-4 py-2 bg-yellow-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 focus:outline-none focus:border-yellow-700 focus:ring ring-yellow-300 disabled:opacity-25 transition ease-in-out duration-150">
+                        <i class="fas fa-edit mr-2"></i>
+                        Editar
+                    </a>
+                    <form action="{{ route($type.'s.destroy', $resource) }}" method="POST" 
+                          onsubmit="return confirm('¿Estás seguro de que quieres eliminar este {{ $type }}?')">
+                        @csrf 
+                        @method('DELETE')
+                        <button type="submit" 
+                                class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:outline-none focus:border-red-700 focus:ring ring-red-300 disabled:opacity-25 transition ease-in-out duration-150">
+                            <i class="fas fa-trash mr-2"></i>
+                            Eliminar
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -44,7 +74,7 @@
                                     <div>
                                         <p class="text-sm font-medium text-gray-500">Nombre Completo</p>
                                         <p class="text-lg font-semibold text-gray-900">
-                                            {{ $resource->nombres }} {{ $resource->apellidos }}
+                                            {{ $resource->nombre_completo }}
                                         </p>
                                     </div>
                                 </div>
@@ -121,6 +151,29 @@
 
                 <!-- Additional Information -->
                 <div class="space-y-6">
+                    @if($type === 'cliente')
+                        <!-- Photo Section -->
+                        <div>
+                            <h2 class="text-xl font-semibold text-gray-900 mb-4">Foto del Cliente</h2>
+                            <div class="text-center p-6 bg-gray-50 rounded-lg">
+                                <img src="{{ $resource->foto_url }}" 
+                                     alt="Foto de {{ $resource->nombre_completo }}" 
+                                     class="w-48 h-48 rounded-full object-cover border-4 border-white shadow-lg mx-auto mb-4">
+                                @if($resource->hasCustomPhoto())
+                                    <p class="text-sm text-green-600 font-medium">
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                        Foto personalizada
+                                    </p>
+                                @else
+                                    <p class="text-sm text-gray-500">
+                                        <i class="fas fa-user-circle mr-1"></i>
+                                        Avatar generado automáticamente
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
                     <div>
                         <h2 class="text-xl font-semibold text-gray-900 mb-4">Información Adicional</h2>
                         
